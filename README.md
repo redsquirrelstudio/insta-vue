@@ -2,7 +2,7 @@
 
 Insta-vue is a simple vue component for displaying instagram account or hashtag post images.
 
-####<a href="#">Github Repo</a> <img width=20 src="https://devicon.dev/devicon.git/icons/github/github-original.svg" >
+####<a href="https://github.com/redsquirrelstudio/insta-vue">Github Repo</a> <img width=20 src="https://devicon.dev/devicon.git/icons/github/github-original.svg" >
 ####<a href="https://www.npmjs.com/package/insta-vue">NPM</a> <img width=20 src="https://devicon.dev/devicon.git/icons/npm/npm-original-wordmark.svg" >
 
 ##Installation 
