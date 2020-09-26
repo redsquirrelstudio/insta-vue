@@ -32,9 +32,9 @@ export default {
     this.getPosts();
   },
   methods: {
-    async getPosts() {
+    getPosts() {
       if (this.tag[0] === '#') {
-        await fetch(`https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1`)
+        fetch(`https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1`)
             .then((response) => {
               response.json().then((data) => {
                 if (data.hasOwnProperty('graphql')) {
@@ -51,7 +51,7 @@ export default {
               });
             });
       } else {
-        await fetch(`https://www.instagram.com/${this.tag}/?__a=1`)
+        fetch(`https://www.instagram.com/${this.tag}/?__a=1`)
             .then(response => {
               response.json().then((data) => {
                 if (data.hasOwnProperty('graphql')) {

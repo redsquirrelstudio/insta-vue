@@ -1,22 +1,28 @@
 {
   "private": false,
   "name": "insta-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple Vue component to display a user or hashtag's instagram feed",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vue serve InstaVue.vue",
-    "build": "bili --name index --plugin vue --vue.css false"
+  "main": "dist/insta-vue.umd.js",
+  "module": "dist/insta-vue.esm.js",
+  "unpkg": "dist/insta-vue.min.js",
+  "browser": {
+    "./sfc": "src/insta-vue.vue"
   },
   "author": "Red Squirrel Studio",
   "license": "MIT",
-  "files": [
-    "dist/*"
-  ],
+  "scripts": {
+    "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/insta-vue.umd.js",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/insta-vue.esm.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/insta-vue.min.js"
+  },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0",
-    "bili": "^5.0.5",
-    "rollup-plugin-vue": "^6.0.0-beta.10",
-    "vue-template-compiler": "^2.6.12"
+    "rollup": "^1.17.0",
+    "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "rollup-plugin-vue": "^5.0.1",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10"
   }
 }
