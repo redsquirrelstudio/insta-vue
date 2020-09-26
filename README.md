@@ -51,8 +51,6 @@ Insta-vue takes the following props for configuration:
 </table>
 
 ##Example
-A demo can be <a href="#">here.</a>
-
 ```js
 <template>
     <div id="app">
