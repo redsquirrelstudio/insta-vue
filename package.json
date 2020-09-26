@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "insta-vue",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple Vue component to display a user or hashtag's instagram feed",
   "main": "dist/insta-vue.umd.js",
   "module": "dist/insta-vue.esm.js",
@@ -11,6 +11,14 @@
   },
   "author": "Red Squirrel Studio",
   "license": "MIT",
+  "keywords": [
+    "Vue",
+    "instagram",
+    "feed",
+    "component",
+    "customisable",
+    "socialmedia"
+  ],
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/insta-vue.umd.js",
