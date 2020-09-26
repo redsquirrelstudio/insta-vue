@@ -1,0 +1,22 @@
+{
+  "private": false,
+  "name": "insta-vue",
+  "version": "2.0.0",
+  "description": "A simple Vue component to display a user or hashtag's instagram feed",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vue serve InstaVue.vue",
+    "build": "bili --name index --plugin vue --vue.css false"
+  },
+  "author": "Red Squirrel Studio",
+  "license": "MIT",
+  "files": [
+    "dist/*"
+  ],
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.0",
+    "bili": "^5.0.5",
+    "rollup-plugin-vue": "^6.0.0-beta.10",
+    "vue-template-compiler": "^2.6.12"
+  }
+}
