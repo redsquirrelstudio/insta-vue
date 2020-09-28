@@ -2,12 +2,12 @@
 
 Insta-vue is a simple vue component for displaying instagram account or hashtag post images.
 
-####<a href="https://github.com/redsquirrelstudio/insta-vue">Github Repo</a> <img width=20 src="https://devicon.dev/devicon.git/icons/github/github-original.svg" >
-####<a href="https://www.npmjs.com/package/insta-vue">NPM</a> <img width=20 src="https://devicon.dev/devicon.git/icons/npm/npm-original-wordmark.svg" >
+#### <a href="https://github.com/redsquirrelstudio/insta-vue">Github Repo</a> <img width=20 src="https://devicon.dev/devicon.git/icons/github/github-original.svg" >
+#### <a href="https://www.npmjs.com/package/insta-vue">NPM</a> <img width=20 src="https://devicon.dev/devicon.git/icons/npm/npm-original-wordmark.svg" >
 
-##Installation 
+## Installation 
 Insta-vue can be installed with both npm and yarn as usual.
-```
+```bash
 npm install insta-vue
 
 yarn add insta-vue
@@ -18,7 +18,7 @@ And then can be imported into your project.
 import 'InstaVue' from "insta-vue";
 ```
 
-##Configuration
+## Configuration
 
 Insta-vue takes the following props for configuration:
 <table>
@@ -50,8 +50,8 @@ Insta-vue takes the following props for configuration:
     </tbody>
 </table>
 
-##Example
-```js
+## Example
+```vue
 <template>
     <div id="app">
         An account feed, latest 6 posts, 5 columns. 
