@@ -1,11 +1,13 @@
 <template>
   <div class="insta-vue">
-    <a :href="post.url" v-for="post in posts" :key="post.id" target="_blank" :style="`width: ${100 / cols}%`">
+    <div @click.prevent="link(post.url)" class="post"
+         :style="`${links ? 'cursor: pointer;' : 'cursor: default;'} width: ${100 / cols}%;`"
+         v-for="post in posts" :key="post.id">
       <img :alt="post.alt" :src="post.src">
-    </a>
+      <p class="description" v-if="descriptions">{{ post.description }}</p>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'InstaVue',
@@ -22,6 +24,14 @@ export default {
       type: Number,
       default: 4,
     },
+    links: {
+      type: Boolean,
+      default: false,
+    },
+    descriptions: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -32,6 +42,11 @@ export default {
     this.getPosts();
   },
   methods: {
+    link(url) {
+      if (this.links) {
+        window.open( url, '_blank');
+      }
+    },
     getPosts() {
       if (this.tag[0] === '#') {
         fetch(`https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1`)
@@ -45,6 +60,7 @@ export default {
                       src: post.display_url,
                       url: `https://www.instagram.com/p/${post.shortcode}/`,
                       alt: post.accessibility_caption,
+                      description: post.edge_media_to_caption.edges[0]['node']['text'],
                     });
                   }
                 }
@@ -62,6 +78,7 @@ export default {
                       src: post.display_url,
                       url: `https://www.instagram.com/p/${post.shortcode}/`,
                       alt: post.accessibility_caption,
+                      description: post.edge_media_to_caption.edges[0]['node']['text'],
                     });
                   }
                 }
@@ -74,20 +91,28 @@ export default {
 </script>
 
 <style scoped>
-  .insta-vue{
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-  }
+.insta-vue {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
 
-  .insta-vue a{
-    display: block;
-    box-sizing: border-box;
-    padding: 10px;
-  }
+.insta-vue .post {
+  display: block;
+  box-sizing: border-box;
+  padding: 10px;
+  height: auto;
+}
 
-  .insta-vue a img{
-    width: 100%;
-    height: 100%;
-  }
+.insta-vue .post img {
+  width: 100%;
+}
+
+.insta-vue p{
+  margin-top: 0.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  color: #FFF;
+  mix-blend-mode: difference;
+}
 </style>

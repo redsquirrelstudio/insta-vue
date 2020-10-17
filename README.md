@@ -47,6 +47,18 @@ Insta-vue takes the following props for configuration:
             <td>4</td>
             <td>The number of posts to be shown in a row before wrapping.</td>
         </tr>
+         <tr>
+            <td>links</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>When true, clicking on a post image will link to it on Instagram</td>
+        </tr>
+         <tr>
+            <td>descriptions</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>When true, post captions will be shown for each post.</td>
+        </tr>
     </tbody>
 </table>
 
