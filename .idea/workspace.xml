@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00ba49d9-0107-42fb-878a-a1998ff01433" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/insta-vue.esm.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/insta-vue.esm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/insta-vue.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/insta-vue.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/insta-vue.umd.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/insta-vue.umd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InstaVue.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/InstaVue.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +36,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602919457213</updated>
-      <workItem from="1602919458346" duration="1742000" />
+      <workItem from="1602919458346" duration="2193000" />
     </task>
     <servers />
   </component>
