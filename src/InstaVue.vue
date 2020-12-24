@@ -44,7 +44,7 @@ export default {
   methods: {
     link(url) {
       if (this.links) {
-        window.open( url, '_blank');
+        window.open(url, '_blank');
       }
     },
     getPosts() {
@@ -65,7 +65,9 @@ export default {
                   }
                 }
               });
-            });
+            }).catch(error => {
+          console.error(`Issue getting Instagram content: ${error}`);
+        });
       } else {
         fetch(`https://www.instagram.com/${this.tag}/?__a=1`)
             .then(response => {
@@ -83,7 +85,9 @@ export default {
                   }
                 }
               });
-            });
+            }).catch(error => {
+          console.error(`Issue getting Instagram content: ${error}`);
+        });
       }
     }
   },
@@ -108,7 +112,7 @@ export default {
   width: 100%;
 }
 
-.insta-vue p{
+.insta-vue p {
   margin-top: 0.5rem;
   width: 100%;
   font-size: 0.9rem;
