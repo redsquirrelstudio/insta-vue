@@ -42,6 +42,7 @@
     data: function data() {
       return {
         posts: [],
+        hashtag: false,
       }
     },
     mounted: function mounted() {
@@ -56,13 +57,18 @@
       getPosts: function getPosts() {
         var this$1 = this;
 
-        if (this.tag[0] === '#') {
-          fetch(("https://www.instagram.com/explore/tags/" + (this.tag.replace('#', '')) + "/?__a=1"))
-              .then(function (response) {
-                response.json().then(function (data) {
-                  if (data.hasOwnProperty('graphql')) {
-                    for (var i = 0; i < this$1.quantity; i++) {
-                      var post = data.graphql.hashtag.edge_hashtag_to_media.edges[i].node;
+        this.hashtag = this.tag[0] === '#';
+        var query = this.hashtag ? ("https://www.instagram.com/explore/tags/" + (this.tag.replace('#', '')) + "/?__a=1") : ("https://www.instagram.com/" + (this.tag) + "/?__a=1");
+        fetch(query)
+            .then(function (response) {
+              if (response.status === 404){
+                console.error(((this$1.hashtag ? 'Hashtag' : 'Account') + " not found for the tag " + (this$1.tag)));
+              }
+              response.json().then(function (data) {
+                if (data.hasOwnProperty('graphql')) {
+                  for (var i = 0; i < this$1.quantity; i++) {
+                    var post = this$1.hashtag ? data.graphql.hashtag.edge_hashtag_to_media.edges[i].node : data.graphql.user.edge_owner_to_timeline_media.edges[i].node;
+                    if (post){
                       this$1.posts.push({
                         id: post.id,
                         src: post.display_url,
@@ -72,31 +78,11 @@
                       });
                     }
                   }
-                });
-              }).catch(function (error) {
-            console.error(("Issue getting Instagram content: " + error));
-          });
-        } else {
-          fetch(("https://www.instagram.com/" + (this.tag) + "/?__a=1"))
-              .then(function (response) {
-                response.json().then(function (data) {
-                  if (data.hasOwnProperty('graphql')) {
-                    for (var i = 0; i < this$1.quantity; i++) {
-                      var post = data.graphql.user.edge_owner_to_timeline_media.edges[i].node;
-                      this$1.posts.push({
-                        id: post.id,
-                        src: post.display_url,
-                        url: ("https://www.instagram.com/p/" + (post.shortcode) + "/"),
-                        alt: post.accessibility_caption,
-                        description: post.edge_media_to_caption.edges[0]['node']['text'],
-                      });
-                    }
-                  }
-                });
-              }).catch(function (error) {
-            console.error(("Issue getting Instagram content: " + error));
-          });
-        }
+                }
+              });
+            }).catch(function (error) {
+          console.error(("Issue getting Instagram content: " + error));
+        });
       }
     },
   };
@@ -278,11 +264,11 @@
     /* style */
     var __vue_inject_styles__ = function (inject) {
       if (!inject) { return }
-      inject("data-v-fe5bcff4_0", { source: "\n.insta-vue[data-v-fe5bcff4] {\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n}\n.insta-vue .post[data-v-fe5bcff4] {\n  display: block;\n  box-sizing: border-box;\n  padding: 10px;\n  height: auto;\n}\n.insta-vue .post img[data-v-fe5bcff4] {\n  width: 100%;\n}\n.insta-vue p[data-v-fe5bcff4] {\n  margin-top: 0.5rem;\n  width: 100%;\n  font-size: 0.9rem;\n  color: #FFF;\n  mix-blend-mode: difference;\n}\n", map: {"version":3,"sources":["/srv/http/insta-vue/src/InstaVue.vue"],"names":[],"mappings":";AAiGA;EACA,aAAA;EACA,eAAA;EACA,WAAA;AACA;AAEA;EACA,cAAA;EACA,sBAAA;EACA,aAAA;EACA,YAAA;AACA;AAEA;EACA,WAAA;AACA;AAEA;EACA,kBAAA;EACA,WAAA;EACA,iBAAA;EACA,WAAA;EACA,0BAAA;AACA","file":"InstaVue.vue","sourcesContent":["<template>\n  <div class=\"insta-vue\">\n    <div @click.prevent=\"link(post.url)\" class=\"post\"\n         :style=\"`${links ? 'cursor: pointer;' : 'cursor: default;'} width: ${100 / cols}%;`\"\n         v-for=\"post in posts\" :key=\"post.id\">\n      <img :alt=\"post.alt\" :src=\"post.src\">\n      <p class=\"description\" v-if=\"descriptions\">{{ post.description }}</p>\n    </div>\n  </div>\n</template>\n<script>\nexport default {\n  name: 'InstaVue',\n  props: {\n    tag: {\n      type: String,\n      required: true,\n    },\n    quantity: {\n      type: Number,\n      default: 4,\n    },\n    cols: {\n      type: Number,\n      default: 4,\n    },\n    links: {\n      type: Boolean,\n      default: false,\n    },\n    descriptions: {\n      type: Boolean,\n      default: false,\n    }\n  },\n  data() {\n    return {\n      posts: [],\n    }\n  },\n  mounted() {\n    this.getPosts();\n  },\n  methods: {\n    link(url) {\n      if (this.links) {\n        window.open(url, '_blank');\n      }\n    },\n    getPosts() {\n      if (this.tag[0] === '#') {\n        fetch(`https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1`)\n            .then((response) => {\n              response.json().then((data) => {\n                if (data.hasOwnProperty('graphql')) {\n                  for (let i = 0; i < this.quantity; i++) {\n                    let post = data.graphql.hashtag.edge_hashtag_to_media.edges[i].node;\n                    this.posts.push({\n                      id: post.id,\n                      src: post.display_url,\n                      url: `https://www.instagram.com/p/${post.shortcode}/`,\n                      alt: post.accessibility_caption,\n                      description: post.edge_media_to_caption.edges[0]['node']['text'],\n                    });\n                  }\n                }\n              });\n            }).catch(error => {\n          console.error(`Issue getting Instagram content: ${error}`);\n        });\n      } else {\n        fetch(`https://www.instagram.com/${this.tag}/?__a=1`)\n            .then(response => {\n              response.json().then((data) => {\n                if (data.hasOwnProperty('graphql')) {\n                  for (let i = 0; i < this.quantity; i++) {\n                    let post = data.graphql.user.edge_owner_to_timeline_media.edges[i].node\n                    this.posts.push({\n                      id: post.id,\n                      src: post.display_url,\n                      url: `https://www.instagram.com/p/${post.shortcode}/`,\n                      alt: post.accessibility_caption,\n                      description: post.edge_media_to_caption.edges[0]['node']['text'],\n                    });\n                  }\n                }\n              });\n            }).catch(error => {\n          console.error(`Issue getting Instagram content: ${error}`);\n        });\n      }\n    }\n  },\n}\n</script>\n\n<style scoped>\n.insta-vue {\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n}\n\n.insta-vue .post {\n  display: block;\n  box-sizing: border-box;\n  padding: 10px;\n  height: auto;\n}\n\n.insta-vue .post img {\n  width: 100%;\n}\n\n.insta-vue p {\n  margin-top: 0.5rem;\n  width: 100%;\n  font-size: 0.9rem;\n  color: #FFF;\n  mix-blend-mode: difference;\n}\n</style>"]}, media: undefined });
+      inject("data-v-35a445c1_0", { source: "\n.insta-vue[data-v-35a445c1] {\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n}\n.insta-vue .post[data-v-35a445c1] {\n  display: block;\n  box-sizing: border-box;\n  padding: 10px;\n  height: auto;\n}\n.insta-vue .post img[data-v-35a445c1] {\n  width: 100%;\n}\n.insta-vue p[data-v-35a445c1] {\n  margin-top: 0.5rem;\n  width: 100%;\n  font-size: 0.9rem;\n  color: #FFF;\n  mix-blend-mode: difference;\n}\n", map: {"version":3,"sources":["/srv/http/insta-vue/src/InstaVue.vue"],"names":[],"mappings":";AAmFA;EACA,aAAA;EACA,eAAA;EACA,WAAA;AACA;AAEA;EACA,cAAA;EACA,sBAAA;EACA,aAAA;EACA,YAAA;AACA;AAEA;EACA,WAAA;AACA;AAEA;EACA,kBAAA;EACA,WAAA;EACA,iBAAA;EACA,WAAA;EACA,0BAAA;AACA","file":"InstaVue.vue","sourcesContent":["<template>\n  <div class=\"insta-vue\">\n    <div @click.prevent=\"link(post.url)\" class=\"post\"\n         :style=\"`${links ? 'cursor: pointer;' : 'cursor: default;'} width: ${100 / cols}%;`\"\n         v-for=\"post in posts\" :key=\"post.id\">\n      <img :alt=\"post.alt\" :src=\"post.src\">\n      <p class=\"description\" v-if=\"descriptions\">{{ post.description }}</p>\n    </div>\n  </div>\n</template>\n<script>\nexport default {\n  name: 'InstaVue',\n  props: {\n    tag: {\n      type: String,\n      required: true,\n    },\n    quantity: {\n      type: Number,\n      default: 4,\n    },\n    cols: {\n      type: Number,\n      default: 4,\n    },\n    links: {\n      type: Boolean,\n      default: false,\n    },\n    descriptions: {\n      type: Boolean,\n      default: false,\n    }\n  },\n  data() {\n    return {\n      posts: [],\n      hashtag: false,\n    }\n  },\n  mounted() {\n    this.getPosts();\n  },\n  methods: {\n    link(url) {\n      if (this.links) {\n        window.open(url, '_blank');\n      }\n    },\n    getPosts() {\n      this.hashtag = this.tag[0] === '#';\n      const query = this.hashtag ? `https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1` : `https://www.instagram.com/${this.tag}/?__a=1`;\n      fetch(query)\n          .then(response => {\n            if (response.status === 404){\n              console.error(`${this.hashtag ? 'Hashtag' : 'Account'} not found for the tag ${this.tag}`);\n            }\n            response.json().then(data => {\n              if (data.hasOwnProperty('graphql')) {\n                for (let i = 0; i < this.quantity; i++) {\n                  let post = this.hashtag ? data.graphql.hashtag.edge_hashtag_to_media.edges[i].node : data.graphql.user.edge_owner_to_timeline_media.edges[i].node;\n                  if (post){\n                    this.posts.push({\n                      id: post.id,\n                      src: post.display_url,\n                      url: `https://www.instagram.com/p/${post.shortcode}/`,\n                      alt: post.accessibility_caption,\n                      description: post.edge_media_to_caption.edges[0]['node']['text'],\n                    });\n                  }\n                }\n              }\n            })\n          }).catch(error => {\n        console.error(`Issue getting Instagram content: ${error}`);\n      });\n    }\n  },\n}\n</script>\n\n<style scoped>\n.insta-vue {\n  display: flex;\n  flex-wrap: wrap;\n  width: 100%;\n}\n\n.insta-vue .post {\n  display: block;\n  box-sizing: border-box;\n  padding: 10px;\n  height: auto;\n}\n\n.insta-vue .post img {\n  width: 100%;\n}\n\n.insta-vue p {\n  margin-top: 0.5rem;\n  width: 100%;\n  font-size: 0.9rem;\n  color: #FFF;\n  mix-blend-mode: difference;\n}\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    var __vue_scope_id__ = "data-v-fe5bcff4";
+    var __vue_scope_id__ = "data-v-35a445c1";
     /* module identifier */
     var __vue_module_identifier__ = undefined;
     /* functional template */

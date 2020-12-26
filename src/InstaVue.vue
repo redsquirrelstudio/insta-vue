@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       posts: [],
+      hashtag: false,
     }
   },
   mounted() {
@@ -48,13 +49,18 @@ export default {
       }
     },
     getPosts() {
-      if (this.tag[0] === '#') {
-        fetch(`https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1`)
-            .then((response) => {
-              response.json().then((data) => {
-                if (data.hasOwnProperty('graphql')) {
-                  for (let i = 0; i < this.quantity; i++) {
-                    let post = data.graphql.hashtag.edge_hashtag_to_media.edges[i].node;
+      this.hashtag = this.tag[0] === '#';
+      const query = this.hashtag ? `https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1` : `https://www.instagram.com/${this.tag}/?__a=1`;
+      fetch(query)
+          .then(response => {
+            if (response.status === 404){
+              console.error(`${this.hashtag ? 'Hashtag' : 'Account'} not found for the tag ${this.tag}`);
+            }
+            response.json().then(data => {
+              if (data.hasOwnProperty('graphql')) {
+                for (let i = 0; i < this.quantity; i++) {
+                  let post = this.hashtag ? data.graphql.hashtag.edge_hashtag_to_media.edges[i].node : data.graphql.user.edge_owner_to_timeline_media.edges[i].node;
+                  if (post){
                     this.posts.push({
                       id: post.id,
                       src: post.display_url,
@@ -64,31 +70,11 @@ export default {
                     });
                   }
                 }
-              });
-            }).catch(error => {
-          console.error(`Issue getting Instagram content: ${error}`);
-        });
-      } else {
-        fetch(`https://www.instagram.com/${this.tag}/?__a=1`)
-            .then(response => {
-              response.json().then((data) => {
-                if (data.hasOwnProperty('graphql')) {
-                  for (let i = 0; i < this.quantity; i++) {
-                    let post = data.graphql.user.edge_owner_to_timeline_media.edges[i].node
-                    this.posts.push({
-                      id: post.id,
-                      src: post.display_url,
-                      url: `https://www.instagram.com/p/${post.shortcode}/`,
-                      alt: post.accessibility_caption,
-                      description: post.edge_media_to_caption.edges[0]['node']['text'],
-                    });
-                  }
-                }
-              });
-            }).catch(error => {
-          console.error(`Issue getting Instagram content: ${error}`);
-        });
-      }
+              }
+            })
+          }).catch(error => {
+        console.error(`Issue getting Instagram content: ${error}`);
+      });
     }
   },
 }
