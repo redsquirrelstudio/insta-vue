@@ -66,7 +66,7 @@ export default {
                       src: post.display_url,
                       url: `https://www.instagram.com/p/${post.shortcode}/`,
                       alt: post.accessibility_caption,
-                      description: post.edge_media_to_caption.edges[0]['node']['text'],
+                      description: post.edge_media_to_caption.edges[0]?['node']['text']:'',
                     });
                   }
                 }
