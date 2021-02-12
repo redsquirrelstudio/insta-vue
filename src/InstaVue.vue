@@ -52,7 +52,7 @@ export default {
       this.hashtag = this.tag[0] === '#';
       const query = this.hashtag ? `https://www.instagram.com/explore/tags/${this.tag.replace('#', '')}/?__a=1` : `https://www.instagram.com/${this.tag}/?__a=1`;
       fetch(query, {
-        referrer: "www.instagram.com",
+        referrer: "https://www.instagram.com",
         cache: "force-cache",
         redirect: "follow",
       }).then(response => {
