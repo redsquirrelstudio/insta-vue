@@ -76,7 +76,8 @@ export default {
               }
             })
           }).catch(error => {
-        console.error(`Issue getting Instagram content: ${error}`);
+            this.$emit('error', error);
+            console.error(`Issue getting Instagram content: ${error}`);
       });
     }
   },
