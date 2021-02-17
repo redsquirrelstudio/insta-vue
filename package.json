@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "insta-vue",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "A simple Vue component to display a user or hashtag's instagram feed",
   "main": "dist/insta-vue.umd.js",
   "module": "dist/insta-vue.esm.js",
