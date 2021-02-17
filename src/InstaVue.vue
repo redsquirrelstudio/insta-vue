@@ -59,6 +59,9 @@ export default {
             if (response.status === 404) {
               console.error(`${this.hashtag ? 'Hashtag' : 'Account'} not found for the tag ${this.tag}`);
             }
+            if(!response.ok) {
+              this.$emit('error', response.status);
+            }
             response.json().then(data => {
               if (data.hasOwnProperty('graphql')) {
                 for (let i = 0; i < this.quantity; i++) {
