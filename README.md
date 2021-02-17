@@ -62,6 +62,12 @@ Insta-vue takes the following props for configuration:
     </tbody>
 </table>
 
+## Error Handling
+Insta-vue uses an emit function that fires when it fails to fetch Instagram posts.
+This can happen due to Instagram throttling requests and can be captures on the component using
+@error
+
+
 ## Example
 ```vue
 <template>
@@ -72,8 +78,9 @@ Insta-vue takes the following props for configuration:
                    :cols="5">
         </insta-vue>
         
-        A hashtag feed, with defaults
-        <insta-vue tag="#programming"></insta-vue>
+        A hashtag feed, with defaults and error handling
+        <insta-vue tag="#programming" @error="log">
+        </insta-vue>
     </div>
 </template>
 
@@ -83,6 +90,11 @@ import 'InstaVue' from 'insta-vue';
 export default{
     components:{
         InstaVue,
+    },
+    methods: {
+      log(error){
+        console.log(error);
+      }
     }
 }
 </script>
